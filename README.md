@@ -1,16 +1,17 @@
 # The King's Hand TKH BOT
 
-This is a simple bot designed to automate gameplay in a specific mobile game on a computer. It works by using image recognition to identify the current game state and performing actions like clicks to progress through battles.
+This is a simple bot designed to automate gameplay in a specific mobile game on a computer. It works by using image recognition to identify the current game state and performing actions like clicks to progress through battles. This bot is specifically designed to work with **Google Play Games PC**.
 
 ## Important Prerequisites
 
 * **Ensure the Game is Running**: The game must be open and in focus on your screen for the bot to work correctly.
 * **Install Python**: You need to have Python installed on your system. You can download it from the official Python website: https://www.python.org/downloads/
+* **Google Play Games PC**: The bot's image recognition and automation logic are tailored to the interface of the game when it's running on Google Play Games PC.
 
 ## How to Set Up and Run
 
 1.  **Download the Files**:
-    * `bot.py`
+    * `TKH.py`
     * `battle_button.png`
     * `ok.png`
     * `2v2end.png`
@@ -19,7 +20,7 @@ This is a simple bot designed to automate gameplay in a specific mobile game on 
     Make sure all these files are in the same folder.
 
 2.  **Run the Bot**:
-    * **Method 1 (Recommended)**: Double-click the `bot.py` file. The script is designed to automatically check for and install the required Python libraries (`pyautogui` and `pydirectinput`) if they are missing.
+    * **Method 1 (Recommended)**: Double-click the `TKH.py` file. The script is designed to automatically check for and install the required Python libraries (`pyautogui` and `pydirectinput`) if they are missing.
     * **Method 2 (Manual Installation)**: If the automatic installation fails, open a terminal or command prompt, navigate to the folder where you saved the files, and run the following commands to install the necessary libraries manually:
         ```bash
         pip install pyautogui
@@ -27,7 +28,7 @@ This is a simple bot designed to automate gameplay in a specific mobile game on 
         ```
         Then, run the script with the command:
         ```bash
-        python bot.py
+        python TKH.py
         ```
 
 3.  **Choose a Game Mode**:
@@ -37,7 +38,7 @@ This is a simple bot designed to automate gameplay in a specific mobile game on 
     * Enter your choice and press Enter.
 
 4.  **Start the Game**:
-    * Ensure the game is the active window.
+    * Ensure the game is the active window on Google Play Games PC.
     * The bot will now begin monitoring the screen and will start playing automatically.
 
 ## How the Bot Works
@@ -49,5 +50,3 @@ The bot operates by continuously monitoring the screen for specific images that 
 * **Battle Complete**:
     * For 1v1, it looks for the `ok.png` button to confirm the end of the match.
     * For 2v2, it looks for the `2v2end.png` button to confirm the end of the match.
-
-The bot uses **image recognition** and **screen coordinates** to automate its actions, making sure it can handle different screen resolutions by using relative positions from the detected images.
