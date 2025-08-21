@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The King's Hand - Clash Royale Bot</title>
+    <!-- Favicon -->
+    <link rel="icon" href="https://placehold.co/32x32/1e3a8a/ffffff?text=TKH" type="image/x-icon">
+    <!-- Inter Font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary-blue': '#1e3a8a',
+                        'secondary-gold': '#d9a91f',
+                        'dark-bg': '#0f172a',
+                        'light-text': '#f1f5f9',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .icon-container {
+            width: 50px;
+            height: 50px;
+        }
+    </style>
+</head>
+<body class="bg-dark-bg text-light-text font-sans antialiased">
+
+    <!-- Header & Hero Section -->
+    <header class="py-10 text-center">
+        <h1 class="text-5xl md:text-6xl font-extrabold text-white leading-tight mb-2">
+            The King's Hand
+        </h1>
+        <p class="text-xl md:text-2xl text-secondary-gold font-semibold tracking-wide">
+            Your Ultimate Clash Royale Companion
+        </p>
+    </header>
+
+    <main class="container mx-auto px-4 md:px-8 max-w-4xl space-y-24 mb-20">
+
+        <!-- Discord & GitHub Buttons -->
+        <section class="text-center">
+            <h2 class="text-3xl font-bold mb-6">Automate your Clash Royale Pass</h2>
+            <p class="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
+                The King's Hand is a powerful bot designed to effortlessly farm your Clash Royale pass by playing games for you, letting you focus on the fun parts of the game.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                <a href="https://discord.gg/TpSGeduSMH" target="_blank" class="inline-block bg-primary-blue text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-blue-800 transition-colors duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary-blue focus:ring-opacity-50">
+                    Join our Discord Server <i class="fab fa-discord ml-2"></i>
+                </a>
+                <a href="https://github.com/jlaiii/TKH" target="_blank" class="inline-block bg-gray-700 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-gray-600 transition-colors duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-700 focus:ring-opacity-50">
+                    View on GitHub <i class="fab fa-github ml-2"></i>
+                </a>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features">
+            <h2 class="text-4xl font-bold text-center mb-12 text-secondary-gold">Key Features</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1: Auto-Farming -->
+                <div class="bg-gray-800 p-8 rounded-2xl shadow-lg transition-transform transform hover:scale-105">
+                    <div class="icon-container flex items-center justify-center bg-primary-blue rounded-full mb-4">
+                        <i class="fas fa-robot text-light-text text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-2">Auto-Farming</h3>
+                    <p class="text-gray-400">
+                        Plays games for you, earning crowns, chests, and trophies to advance your pass.
+                    </p>
+                </div>
+                <!-- Feature 2: Versatile Gameplay -->
+                <div class="bg-gray-800 p-8 rounded-2xl shadow-lg transition-transform transform hover:scale-105">
+                    <div class="icon-container flex items-center justify-center bg-primary-blue rounded-full mb-4">
+                        <i class="fas fa-chess-king text-light-text text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-2">Flexible Modes</h3>
+                    <p class="text-gray-400">
+                        Supports both 1v1 and 2v2 modes, adapting to your preferred style of play.
+                    </p>
+                </div>
+                <!-- Feature 3: Smart Detection -->
+                <div class="bg-gray-800 p-8 rounded-2xl shadow-lg transition-transform transform hover:scale-105">
+                    <div class="icon-container flex items-center justify-center bg-primary-blue rounded-full mb-4">
+                        <i class="fas fa-brain text-light-text text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-2">Intelligent System</h3>
+                    <p class="text-gray-400">
+                        Uses image recognition to navigate menus and make smart in-game decisions.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="text-center">
+            <h2 class="text-4xl font-bold text-center mb-12 text-secondary-gold">About the Project</h2>
+            <div class="bg-gray-800 p-8 rounded-2xl shadow-lg max-w-2xl mx-auto">
+                <p class="text-lg text-gray-300">
+                    The King's Hand is a passion project developed and maintained by a solo developer. I built this bot to help players who don't have enough time to grind the game, ensuring everyone can enjoy the rewards of the Clash Royale Pass. I'm committed to its continuous improvement and providing a valuable tool for the community.
+                </p>
+            </div>
+        </section>
+
+        <!-- Donations Section -->
+        <section id="donate">
+            <h2 class="text-4xl font-bold text-center mb-12 text-secondary-gold">Support the Developer</h2>
+            <div class="bg-gray-800 p-8 rounded-2xl shadow-lg">
+                <p class="text-lg text-gray-300 text-center mb-6">
+                    If you find The King's Hand useful and would like to support its development, you can send a donation to the following cryptocurrency addresses. Your support is greatly appreciated!
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <!-- Donation Card -->
+                    <div class="p-6 bg-gray-900 rounded-xl">
+                        <h3 class="text-2xl font-semibold mb-2">BTC <i class="fab fa-btc ml-1 text-secondary-gold"></i></h3>
+                        <div class="relative">
+                            <input id="btc-address" type="text" readonly value="bc1quk2r3sukuv4pjumjqpj2hjl6lnvkcq6ws7uanl" class="w-full bg-gray-700 text-sm md:text-base px-3 py-2 rounded-lg truncate">
+                            <button onclick="copyToClipboard('btc-address')" class="absolute right-2 top-1/2 -translate-y-1/2 bg-primary-blue text-light-text text-xs font-bold py-1 px-2 rounded-md hover:bg-blue-800">
+                                Copy
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Donation Card -->
+                    <div class="p-6 bg-gray-900 rounded-xl">
+                        <h3 class="text-2xl font-semibold mb-2">ETH <i class="fab fa-ethereum ml-1 text-secondary-gold"></i></h3>
+                        <div class="relative">
+                            <input id="eth-address" type="text" readonly value="0x037a45482e5d0a988AA5ff5F6804DCe3276488D6" class="w-full bg-gray-700 text-sm md:text-base px-3 py-2 rounded-lg truncate">
+                            <button onclick="copyToClipboard('eth-address')" class="absolute right-2 top-1/2 -translate-y-1/2 bg-primary-blue text-light-text text-xs font-bold py-1 px-2 rounded-md hover:bg-blue-800">
+                                Copy
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Donation Card -->
+                    <div class="p-6 bg-gray-900 rounded-xl">
+                        <h3 class="text-2xl font-semibold mb-2">LTC <i class="fas fa-l ml-1 text-secondary-gold"></i></h3>
+                        <div class="relative">
+                            <input id="ltc-address" type="text" readonly value="ltc1q3tl5av8y365wjxwdm3dxxapgq06skx6ch7gt34" class="w-full bg-gray-700 text-sm md:text-base px-3 py-2 rounded-lg truncate">
+                            <button onclick="copyToClipboard('ltc-address')" class="absolute right-2 top-1/2 -translate-y-1/2 bg-primary-blue text-light-text text-xs font-bold py-1 px-2 rounded-md hover:bg-blue-800">
+                                Copy
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Donation Card -->
+                    <div class="p-6 bg-gray-900 rounded-xl">
+                        <h3 class="text-2xl font-semibold mb-2">XRP <i class="fas fa-x ml-1 text-secondary-gold"></i></h3>
+                        <div class="relative">
+                            <input id="xrp-address" type="text" readonly value="rBfotLuETWBKWmsbzTZisCp2LSf4oqtTFK" class="w-full bg-gray-700 text-sm md:text-base px-3 py-2 rounded-lg truncate">
+                            <button onclick="copyToClipboard('xrp-address')" class="absolute right-2 top-1/2 -translate-y-1/2 bg-primary-blue text-light-text text-xs font-bold py-1 px-2 rounded-md hover:bg-blue-800">
+                                Copy
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Donation Card -->
+                    <div class="p-6 bg-gray-900 rounded-xl">
+                        <h3 class="text-2xl font-semibold mb-2">SOL <i class="fab fa-solana ml-1 text-secondary-gold"></i></h3>
+                        <div class="relative">
+                            <input id="sol-address" type="text" readonly value="8PzeFDjKUQf9UDY4ezNdG9927wxKmeETTTyvv2GtuK1a" class="w-full bg-gray-700 text-sm md:text-base px-3 py-2 rounded-lg truncate">
+                            <button onclick="copyToClipboard('sol-address')" class="absolute right-2 top-1/2 -translate-y-1/2 bg-primary-blue text-light-text text-xs font-bold py-1 px-2 rounded-md hover:bg-blue-800">
+                                Copy
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Donation Card -->
+                    <div class="p-6 bg-gray-900 rounded-xl">
+                        <h3 class="text-2xl font-semibold mb-2">XMR <i class="fab fa-monero ml-1 text-secondary-gold"></i></h3>
+                        <div class="relative">
+                            <input id="xmr-address" type="text" readonly value="85QzVMEGFvogZzGUqmB6aQTcLucKKPCSCiP6rAeNN7nMbM9u5EVgGKPXocrxp6FzwKdVGooPHJaKjMyFsA3ma6zJ1yifbPb" class="w-full bg-gray-700 text-sm md:text-base px-3 py-2 rounded-lg truncate">
+                            <button onclick="copyToClipboard('xmr-address')" class="absolute right-2 top-1/2 -translate-y-1/2 bg-primary-blue text-light-text text-xs font-bold py-1 px-2 rounded-md hover:bg-blue-800">
+                                Copy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <!-- Footer -->
+    <footer class="text-center py-8 text-gray-500 text-sm">
+        <p>
+            &copy; 2024 The King's Hand. All rights reserved. Not affiliated with Supercell.
+        </p>
+    </footer>
+
+    <!-- JavaScript for Copy to Clipboard -->
+    <script>
+        function copyToClipboard(elementId) {
+            const copyText = document.getElementById(elementId);
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); // For mobile devices
+            document.execCommand('copy');
+            alertMessage('Copied to clipboard!');
+        }
+
+        function alertMessage(message) {
+            const alertBox = document.createElement('div');
+            alertBox.textContent = message;
+            alertBox.classList.add('fixed', 'bottom-8', 'left-1/2', '-translate-x-1/2', 'bg-primary-blue', 'text-light-text', 'px-6', 'py-3', 'rounded-full', 'shadow-lg', 'font-bold', 'transition-opacity', 'duration-300', 'ease-in-out', 'opacity-0');
+            document.body.appendChild(alertBox);
+
+            setTimeout(() => {
+                alertBox.classList.remove('opacity-0');
+                alertBox.classList.add('opacity-100');
+            }, 100);
+
+            setTimeout(() => {
+                alertBox.classList.remove('opacity-100');
+                alertBox.classList.add('opacity-0');
+                alertBox.addEventListener('transitionend', () => alertBox.remove());
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
