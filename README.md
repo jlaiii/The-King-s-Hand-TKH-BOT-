@@ -1,52 +1,53 @@
 # The King's Hand TKH BOT
 
-This is a simple bot designed to automate gameplay in a specific mobile game on a computer. It works by using image recognition to identify the current game state and performing actions like clicks to progress through battles. This bot is specifically designed to work with **Google Play Games PC**.
+This bot automates gameplay in Clash Royale. It uses image recognition to find game elements and perform actions like clicks. It's designed to work with **Google Play Games PC**.
 
-## Important Prerequisites
+## Prerequisites
 
-* **Ensure the Game is Running**: The game must be open and in focus on your screen for the bot to work correctly.
-* **Install Python**: You need to have Python installed on your system. You can download it from the official Python website: https://www.python.org/downloads/
-* **Google Play Games PC**: The bot's image recognition and automation logic are tailored to the interface of the game when it's running on https://play.google.com/googleplaygames
+* **Google Play Games PC**: The bot is built for the game's interface on this platform. Get it here: [https://play.google.com/googleplaygames](https://play.google.com/googleplaygames)
+* **Python**: You must have Python installed. Download it here: [https://www.python.org/downloads/](https://www.python.org/downloads/)
+* **Game Window**: The game must be open and active on your screen.
 
-## How to Set Up and Run
+---
 
-1.  **Download the Files**:
-    * `TKH.py`
-    * `battle_button.png`
-    * `ok.png`
-    * `2v2end.png`
-    * `inbattle.png`
+## How to Install & Run
 
-    Make sure all these files are in the same folder.
+### Step 1: Download the Files
 
-2.  **Run the Bot**:
-    * **Method 1 (Recommended)**: Double-click the `TKH.py` file. The script is designed to automatically check for and install the required Python libraries (`pyautogui` and `pydirectinput`) if they are missing.
-    * **Method 2 (Manual Installation)**: If the automatic installation fails, open a terminal or command prompt, navigate to the folder where you saved the files, and run the following commands to install the necessary libraries manually:
-        ```bash
-        pip install pyautogui
-        pip install pydirectinput
-        ```
-        Then, run the script with the command:
-        ```bash
-        python TKH.py
-        ```
+1.  Download the bot's main script, `TKH.py`.
+2.  Also download the required image assets: `battle_button.png`, `ok.png`, `playagain.png`, `2v2end.png`, and `inbattle.png`.
 
-3.  **Choose a Game Mode**:
-    * After starting the script, a command window will appear and prompt you to select a game mode:
-        * **1** for 1v1
-        * **2** for 2v2
-    * Enter your choice and press Enter.
+**Important**: Create a new folder for the bot. Place `TKH.py` in the main folder and put all the `.png` files inside a new subfolder named **`assets`**.
 
-4.  **Start the Game**:
-    * Ensure the game is the active window on Google Play Games PC.
-    * The bot will now begin monitoring the screen and will start playing automatically.
+### Step 2: Run the Bot
 
-## How the Bot Works
+1.  **Double-click `TKH.py`**. The script will automatically install the needed libraries (`pyautogui` and `pydirectinput`) if you don't have them.
+2.  If that fails, open your terminal or command prompt, navigate to the bot's folder, and run:
+    ```bash
+    pip install pyautogui pydirectinput
+    python TKH.py
+    ```
+
+### Step 3: Choose a Game Mode
+
+A menu will appear asking you to choose a game mode:
+* `1`: 1v1 Mode
+* `2`: 2v2 Mode
+* `3`: 1v1 Trophy Road Mode
+
+Enter your choice and press **Enter**.
+
+The bot will now begin monitoring your screen and playing the game automatically.
+
+---
+
+## How It Works
 
 The bot operates by continuously monitoring the screen for specific images that represent different game states:
 
-* **Main Menu**: It looks for `battle_button.png`. Once found, it initiates a new game by clicking the appropriate location.
-* **In-Battle**: It detects the `inbattle.png` marker to know it's in a live match. While in a battle, it performs a series of "jitter clicks" (clicks with a random offset) to place cards on the screen.
+* **Main Menu**: It looks for `battle_button.png`. Once found, it clicks the button to start a new game.
+* **In-Battle**: It detects the `inbattle.png` marker to know it's in a live match. While in a battle, it performs "jitter clicks" (clicks with a random offset) to place cards on the screen.
 * **Battle Complete**:
-    * For 1v1, it looks for the `ok.png` button to confirm the end of the match.
-    * For 2v2, it looks for the `2v2end.png` button to confirm the end of the match.
+    * For 1v1, it looks for the `ok.png` button to end the match and return to the main menu.
+    * For 2v2, it looks for the `2v2end.png` button to end the match.
+    * For 1v1 Trophy Road, it looks for the `playagain.png` button to start another match or `ok.png` as a fallback.
