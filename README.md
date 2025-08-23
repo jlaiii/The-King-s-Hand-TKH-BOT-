@@ -6,7 +6,7 @@ This is a simple bot designed to automate gameplay in a specific mobile game on 
 
 * **Ensure the Game is Running**: The game must be open and in focus on your screen for the bot to work correctly.
 * **Install Python**: You need to have Python installed on your system. You can download it from the official Python website: https://www.python.org/downloads/
-* **Google Play Games PC**: The bot's image recognition and automation logic are tailored to the interface of the game when it's running on Google Play Games PC. https://play.google.com/googleplaygames
+* **Google Play Games PC**: The bot's image recognition and automation logic are tailored to the interface of the game when it's running on https://play.google.com/googleplaygames
 
 ## How to Set Up and Run
 
