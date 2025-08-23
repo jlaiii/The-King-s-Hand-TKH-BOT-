@@ -1,0 +1,12 @@
+[
+  {
+    "version": "1.0.0",
+    "date": "2025-08-15",
+    "changes": [
+      {
+        "type": "Initial Release",
+        "description": "First public release of the website and bot. The website now has basic information about the bot, features, and a Discord invite link."
+      }
+    ]
+  }
+]
