@@ -1,5 +1,43 @@
 [
   {
+    "version": "v1.0.1",
+    "date": "2025-08-26",
+    "changes": [
+      {
+        "type": "Bug Fix",
+        "description": "Fixed issue where the system would try to find the Battle button immediately after a battle, causing unwanted retry loops and automatic OK button presses."
+      },
+      {
+        "type": "Improvement",
+        "description": "Added state-aware Battle button detection that prevents clicking during post-battle transitions."
+      },
+      {
+        "type": "Improvement",
+        "description": "Reduced Battle button retry aggressiveness from 5 attempts to 3 attempts with shorter delays."
+      },
+      {
+        "type": "Bug Fix",
+        "description": "Fixed premature Battle button detection during loading screens and post-battle transitions by increasing confidence threshold from 0.4 to 0.7."
+      },
+      {
+        "type": "Enhancement",
+        "description": "Implemented 5-second cooldown period after successful Battle button clicks to prevent immediate re-detection during transitions."
+      },
+      {
+        "type": "Enhancement",
+        "description": "Added battle detection stability system to handle temporary GUI detection failures - now waits 5 seconds before considering a battle actually ended."
+      },
+      {
+        "type": "Improvement",
+        "description": "Prioritized post-battle screen detection (OK, Play Again, 2v2 End) over Battle button detection to ensure proper flow."
+      },
+      {
+        "type": "Bug Fix",
+        "description": "Fixed false 'main menu detected' messages during post-battle screens by adding transition state protection."
+      }
+    ]
+  },
+  {
     "version": "v1.0.0",
     "date": "2025-08-15",
     "changes": [

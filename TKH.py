@@ -102,38 +102,34 @@ def click_with_retry(image_path, confidence, grayscale, offset_x=0, offset_y=0, 
     log_event(f"Failed to click the button after {attempts} attempts. Moving on.")
     return False
 
-def click_battle_button(image_paths, game_mode, attempts=5, delay_between_attempts=2.0):
+def click_battle_button(image_paths, game_mode):
     """
-    Finds and clicks the battle button with multiple retries, including a second click for 2v2 mode.
-    Returns True if the clicks were successful, False otherwise.
+    Finds and clicks the battle button once, including a second click for 2v2 mode.
+    Returns True if the click was successful, False otherwise.
     """
-    for attempt in range(attempts):
-        battle_button_location = find_image_on_screen(image_paths['battle_button_image'], confidence=0.6)
-        if battle_button_location:
-            log_event(f"Attempt {attempt + 1}/{attempts}: Clicking the main Battle button.")
-            jitter_click(battle_button_location[0] + 0, battle_button_location[1] - 200) # First click
-            time.sleep(1) # Wait for the screen to transition
-            
-            # Special handling for 2v2 mode
-            if game_mode == "2v2":
-                log_event("Selecting 2v2 mode with an additional click.")
-                # Use the saved location to perform the second click
-                jitter_click(battle_button_location[0] + 150, battle_button_location[1] - 400)
-                time.sleep(random.uniform(1.0, 2.0))
-            
-            # A simple check to see if the battle button is still there. If it's not, the click likely succeeded.
-            if not find_image_on_screen(image_paths['battle_button_image'], confidence=0.6):
-                log_event("Battle button click appears to be successful. Moving to next state.")
-                return True
-            else:
-                log_event("Battle button still visible. Retrying.")
-                time.sleep(delay_between_attempts)
+    battle_button_location = find_image_on_screen(image_paths['battle_button_image'], confidence=0.6)
+    if battle_button_location:
+        log_event("Clicking the main Battle button.")
+        jitter_click(battle_button_location[0] + 0, battle_button_location[1] - 200) # First click
+        time.sleep(1) # Wait for the screen to transition
+        
+        # Special handling for 2v2 mode
+        if game_mode == "2v2":
+            log_event("Selecting 2v2 mode with an additional click.")
+            # Use the saved location to perform the second click
+            jitter_click(battle_button_location[0] + 150, battle_button_location[1] - 400)
+            time.sleep(random.uniform(1.0, 2.0))
+        
+        # A simple check to see if the battle button is still there. If it's not, the click likely succeeded.
+        if not find_image_on_screen(image_paths['battle_button_image'], confidence=0.6):
+            log_event("Battle button click successful. Searching for game...")
+            return True
         else:
-            log_event(f"Attempt {attempt + 1}/{attempts}: Battle button not found. Retrying in {delay_between_attempts} seconds...")
-            time.sleep(delay_between_attempts)
-
-    log_event("Failed to click the Battle button after multiple attempts.")
-    return False
+            log_event("Battle button still visible after click.")
+            return False
+    else:
+        log_event("Battle button not found when trying to click.")
+        return False
 
 def check_image_assets(image_paths):
     """
@@ -192,6 +188,9 @@ def monitor_game_status(game_mode, image_paths):
     game_find_times = []
     battle_durations = []
     unknown_state_start_time = None
+    last_battle_button_click_time = 0  # Track when we last clicked the battle button
+    last_in_battle_detection_time = 0  # Track when we last detected being in battle
+    battle_detection_lost_time = None  # Track when we first lost battle detection
     
     # Deques to store recent game data for calculating rolling averages
     games_completed_last_week = deque(maxlen=7)
@@ -241,9 +240,13 @@ def monitor_game_status(game_mode, image_paths):
         if game_state != "unknown":
             unknown_state_start_time = None
         
-        # Check for in-battle marker
+        # Check for in-battle marker with stability system
         in_battle_location = find_image_on_screen(image_paths['in_battle_image'], confidence=0.9)
         if in_battle_location:
+            # Update the last detection time
+            last_in_battle_detection_time = current_time
+            battle_detection_lost_time = None  # Reset the lost detection timer
+            
             if game_state != "in_battle":
                 elapsed_finding_game = time.time() - start_time_finding_game
                 log_event(f"Status: Detected you are in a battle. Found a game in {elapsed_finding_game:.2f} seconds.")
@@ -264,10 +267,23 @@ def monitor_game_status(game_mode, image_paths):
             jitter_click(click2_x, click2_y)
             total_cards_placed += 1
             time.sleep(1)
+        
+        # Handle case where in-battle marker is not detected
+        elif game_state == "in_battle":
+            # We were in battle but don't detect it now - start the stability timer
+            if battle_detection_lost_time is None:
+                battle_detection_lost_time = current_time
+                log_event("Temporarily lost in-battle detection. Waiting for stability...")
+            elif (current_time - battle_detection_lost_time) >= 5:
+                # We've lost detection for 5+ seconds, consider battle actually ended
+                log_event("In-battle detection lost for 5+ seconds. Battle likely ended.")
+                game_state = "battle_ended_waiting_for_results"
+                battle_detection_lost_time = None
+            # If less than 5 seconds, continue as if still in battle but don't perform actions
 
         # Check for 2v2 end button (battle complete for 2v2)
         elif game_mode == "2v2" and find_image_on_screen(image_paths['two_v_two_end_image'], confidence=0.8, grayscale=True):
-            if game_state != "battle_complete_2v2":
+            if game_state not in ["battle_complete_2v2", "battle_ended_waiting_for_results"]:
                 elapsed_in_battle = time.time() - start_time_in_battle if start_time_in_battle else 0
                 log_event(f"Status: Battle finished. The battle lasted {elapsed_in_battle:.2f} seconds.")
                 battle_durations.append(elapsed_in_battle)
@@ -277,11 +293,13 @@ def monitor_game_status(game_mode, image_paths):
                 
                 log_event("Clicking 2v2 end button.")
                 click_with_retry(image_paths['two_v_two_end_image'], confidence=0.8, grayscale=True)
+                time.sleep(2)  # Give time for screen transition
+                game_state = "returning_to_menu"  # Reset state to allow Battle button detection
                 start_time_finding_game = time.time()
 
         # Check for play again button (1v1 Trophy Road)
         elif game_mode == "1v1_trophy_road" and find_image_on_screen(image_paths['play_again_image'], confidence=0.8, grayscale=False):
-            if game_state != "battle_complete_1v1_trophy_road":
+            if game_state not in ["battle_complete_1v1_trophy_road", "battle_ended_waiting_for_results"]:
                 elapsed_in_battle = time.time() - start_time_in_battle if start_time_in_battle else 0
                 log_event(f"Status: Battle finished. The battle lasted {elapsed_in_battle:.2f} seconds.")
                 battle_durations.append(elapsed_in_battle)
@@ -291,11 +309,13 @@ def monitor_game_status(game_mode, image_paths):
             
             log_event("Clicking Play Again button.")
             click_with_retry(image_paths['play_again_image'], confidence=0.8, grayscale=False)
+            time.sleep(2)  # Give time for screen transition
+            game_state = "returning_to_menu"  # Reset state to allow Battle button detection
             start_time_finding_game = time.time()
 
-        # Check for OK button (battle complete for 1v1 classic)
-        elif game_mode == "1v1" and find_image_on_screen(image_paths['ok_button_image'], confidence=0.5, grayscale=True):
-            if game_state != "battle_complete_1v1":
+        # Check for OK button (battle complete - prioritize this over Battle button detection)
+        elif find_image_on_screen(image_paths['ok_button_image'], confidence=0.5, grayscale=True):
+            if game_state not in ["battle_complete_1v1", "battle_complete_1v1_trophy_road", "battle_ended_waiting_for_results"]:
                 elapsed_in_battle = time.time() - start_time_in_battle if start_time_in_battle else 0
                 log_event(f"Status: Battle finished. The battle lasted {elapsed_in_battle:.2f} seconds.")
                 battle_durations.append(elapsed_in_battle)
@@ -305,18 +325,37 @@ def monitor_game_status(game_mode, image_paths):
             
             log_event("Clicking OK button to return to main menu.")
             click_with_retry(image_paths['ok_button_image'], confidence=0.5, grayscale=True, offset_x=-30)
+            time.sleep(2)  # Give time for screen transition
+            game_state = "returning_to_menu"  # Reset state to allow Battle button detection
             start_time_finding_game = time.time()
 
-        # Check for Battle button (main menu)
-        elif find_image_on_screen(image_paths['battle_button_image'], confidence=0.4):
-            if game_state != "not_in_battle":
-                log_event("Status: Detected main menu. Initiating new game...")
-                game_state = "not_in_battle"
-                
-                # Use the new retry function for the battle button
-                if not click_battle_button(image_paths, game_mode):
-                    log_event("Failed to click battle button. Re-entering loop to try again.")
-                start_time_finding_game = time.time()
+        # Check for Battle button (main menu) - use higher confidence to avoid false positives
+        elif find_image_on_screen(image_paths['battle_button_image'], confidence=0.7):
+            # Only avoid clicking if we just completed a battle and haven't processed the post-battle screen yet
+            if game_state in ["battle_complete_1v1", "battle_complete_2v2", "battle_complete_1v1_trophy_road"]:
+                # We just completed a battle, wait for the proper post-battle screen
+                log_event("Battle button detected but ignoring since we just completed a battle. Waiting for proper post-battle screen...")
+                time.sleep(1)
+            # Also avoid clicking if we recently clicked the battle button (within 5 seconds)
+            elif (current_time - last_battle_button_click_time) < 5:
+                # We recently clicked the battle button, probably in a loading/transition state
+                pass  # Do nothing, don't log spam
+            # Also avoid if we're in unknown state (likely a transition screen)
+            elif game_state == "unknown" and unknown_state_start_time and (current_time - unknown_state_start_time) < 3:
+                # We're in an unknown state recently, probably a transition screen showing false battle button
+                pass  # Do nothing, don't log spam
+            else:
+                # Safe to click the battle button - ensure we're actually on main menu
+                if game_state != "not_in_battle":
+                    log_event("Status: Detected main menu. Initiating new game...")
+                    game_state = "not_in_battle"
+                    
+                    # Use the new retry function for the battle button
+                    if click_battle_button(image_paths, game_mode):
+                        last_battle_button_click_time = current_time  # Record successful click time
+                    else:
+                        log_event("Failed to click battle button. Re-entering loop to try again.")
+                    start_time_finding_game = time.time()
 
         # If none of the known states are found, check for a fallback
         else:
@@ -324,6 +363,11 @@ def monitor_game_status(game_mode, image_paths):
                 log_event("Status: Unknown or loading screen.")
                 game_state = "unknown"
                 unknown_state_start_time = time.time()
+            
+            # Reset battle completion states after some time to allow normal menu detection
+            elif game_state in ["battle_complete_1v1", "battle_complete_2v2", "battle_complete_1v1_trophy_road"] and unknown_state_start_time and (current_time - unknown_state_start_time) > 5:
+                log_event("Resetting battle completion state to allow normal menu detection.")
+                game_state = "unknown"
 
             # Fallback for 1v1 Trophy Road mode if "playagain.png" is not found
             if game_mode == "1v1_trophy_road" and unknown_state_start_time and (current_time - unknown_state_start_time) > 10:
@@ -340,6 +384,8 @@ def monitor_game_status(game_mode, image_paths):
 
                     log_event("Clicking OK button to return to main menu.")
                     click_with_retry(image_paths['ok_button_image'], confidence=0.5, grayscale=True, offset_x=-30)
+                    time.sleep(2)  # Give time for screen transition
+                    game_state = "returning_to_menu"  # Reset state to allow Battle button detection
                     start_time_finding_game = time.time()
                     unknown_state_start_time = None # Reset the timer
 
