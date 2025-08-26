@@ -34,6 +34,18 @@
       {
         "type": "Bug Fix",
         "description": "Fixed false 'main menu detected' messages during post-battle screens by adding transition state protection."
+      },
+      {
+        "type": "Feature",
+        "description": "Added automatic update checking system that compares current version with latest GitHub release."
+      },
+      {
+        "type": "Enhancement",
+        "description": "Implemented centralized version management with embedded version constants in the main script."
+      },
+      {
+        "type": "Improvement",
+        "description": "Added version display in startup banner and initialization logs for better version tracking."
       }
     ]
   },
